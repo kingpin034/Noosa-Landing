@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Plus Jakarta Sans:SemiBold';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/Plus_Jakarta_Sans-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans:Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Plus_Jakarta_Sans-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans:Medium';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/Plus_Jakarta_Sans-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans:Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/Plus_Jakarta_Sans-Bold.woff2') format('woff2');
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+/* The page background. Set here as well as on the layout so overscroll bounce,
+   the browser chrome and any area the layout does not cover all match. */
+html,
+body {
+  background-color: #131313;
+  color-scheme: dark;
+}
+
+/* Typewriter caret in the hero headline. Steps rather than fades, so it reads as
+   a terminal cursor rather than a pulse. */
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Organizer logo strip. The track holds the list twice, so translating it by
+   half its width lands exactly on the start of the second copy and the loop is
+   seamless. Each logo carries its gap as a right margin rather than the flex
+   container carrying `gap`, so the two copies are separated by the same spacing
+   as the logos within one — with a container `gap` the seam would be half a gap
+   short and visibly jump. */
+@keyframes organizer-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

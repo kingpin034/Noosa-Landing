@@ -1,0 +1,10 @@
+{
+  "description": "Delivers a visually precise landing page that matches the original design exactly, enhancing brand consistency and user engagement for businesses.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
