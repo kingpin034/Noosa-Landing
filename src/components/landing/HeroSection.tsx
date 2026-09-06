@@ -6,6 +6,7 @@ import imgAvatarTamangKarya from "../../assets/avatar-tamang-karya.png"
 import imgHero from "../../assets/hero-app-preview.png"
 import { useTypewriter } from "../../hooks"
 import { UserKeyIcon } from "../icons"
+import { BubbleBackground } from "./BubbleBackground"
 import { Container, SECTION_X } from "./layout"
 
 /** Radial red glow behind the hero, flipped so the bright edge sits at the bottom. */
@@ -66,32 +67,43 @@ function Headline() {
   )
 }
 
+/** Shared ring so both CTAs show the same keyboard focus treatment. */
+const CTA_FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-[#f5f5f5] focus-visible:outline-offset-2 focus-visible:outline"
+
 function CallToAction() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] items-start max-w-[280px] relative shrink-0 w-full">
-      <div className="bg-[rgba(216,68,75,0.8)] relative rounded-[16px] shrink-0 w-full">
-        <div
-          aria-hidden
-          className="absolute border border-[#d8444b] border-solid inset-0 pointer-events-none rounded-[16px]"
-        />
-        <div className="flex flex-row items-center justify-center size-full">
-          <div className="content-stretch flex items-center justify-center px-[12px] py-[16px] relative size-full">
-            <p className="[word-break:break-word] font-['Plus_Jakarta_Sans:Medium',sans-serif] font-medium leading-[normal] relative shrink-0 text-[#f5f5f5] text-[14px] whitespace-nowrap">
-              Create Your First Event
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="bg-[rgba(216,68,75,0.1)] content-stretch flex gap-[10px] items-center justify-center px-[12px] py-[16px] relative rounded-[16px] shrink-0 w-full">
-        <div
-          aria-hidden
-          className="absolute border border-[#d8444b] border-solid inset-0 pointer-events-none rounded-[16px]"
-        />
+      {/* Hover swaps the solid red fill for the page black, keeping the red
+          outline — so the button reads as filled at rest and outlined on hover. */}
+      <a
+        className={`bg-[rgba(216,68,75,0.8)] border border-[#d8444b] border-solid duration-300 flex hover:bg-[#131313] hover:text-white items-center justify-center px-[12px] py-[16px] relative rounded-[16px] shrink-0 text-[#f5f5f5] transition-colors w-full ${CTA_FOCUS}`}
+        href="https://www.mynoosa.id/en/signin"
+      >
+        <span className="[word-break:break-word] font-['Plus_Jakarta_Sans:Medium',sans-serif] font-medium leading-[normal] text-[14px] whitespace-nowrap">
+          Host With Noosa
+        </span>
+      </a>
+      {/* The href keeps middle-click and "open in new tab" working, but a plain
+          anchor only scrolls when the hash actually changes — click it, scroll
+          back up, click again and nothing happens. Driving the scroll ourselves
+          makes every click work. `scrollIntoView` with no `behavior` inherits
+          the CSS `scroll-behavior`, which is already off under reduced motion. */}
+      <a
+        className={`bg-[rgba(216,68,75,0.1)] border border-[#d8444b] border-solid duration-300 flex gap-[10px] hover:bg-[rgba(216,68,75,0.2)] items-center justify-center px-[12px] py-[16px] relative rounded-[16px] shrink-0 transition-colors w-full ${CTA_FOCUS}`}
+        href="#how-it-works"
+        onClick={(event) => {
+          const target = document.getElementById("how-it-works")
+          if (!target) return
+          event.preventDefault()
+          target.scrollIntoView({ block: "start" })
+        }}
+      >
         <UserKeyIcon />
-        <p className="[word-break:break-word] font-['Plus_Jakarta_Sans:Medium',sans-serif] font-medium leading-[normal] relative shrink-0 text-[#f5f5f5] text-[14px] whitespace-nowrap">
+        <span className="[word-break:break-word] font-['Plus_Jakarta_Sans:Medium',sans-serif] font-medium leading-[normal] text-[#f5f5f5] text-[14px] whitespace-nowrap">
           See How it Works
-        </p>
-      </div>
+        </span>
+      </a>
     </div>
   )
 }
@@ -175,12 +187,17 @@ export function HeroSection() {
     <section
       className={`bg-[#131313] overflow-hidden pb-[42px] pt-[56px] relative w-full md:pt-[80px] ${SECTION_X}`}
     >
-      {/* Full-bleed glow: spans the screen, not the 1440px content column. */}
+      {/* Full-bleed glow: spans the screen, not the 1440px content column. The
+          bubbles drift on top of it in the same reds, so the hero keeps its
+          existing colour and just gains movement. */}
       <div
         aria-hidden
         className="-scale-y-100 absolute h-[520px] left-0 right-0 top-0 md:h-[800px]"
         style={{ backgroundImage: HERO_GLOW }}
       />
+      <div aria-hidden className="absolute h-[520px] left-0 right-0 top-0 md:h-[800px]">
+        <BubbleBackground />
+      </div>
       <Container className="content-stretch flex flex-col gap-[32px] items-center relative">
         <Headline />
         <CallToAction />

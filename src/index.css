@@ -69,3 +69,53 @@ body {
     transform: translateX(-50%);
   }
 }
+
+/* In-page anchor jumps (the hero's "See How it Works" button) glide instead of
+   teleporting. Suppressed when the OS asks for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Hero bubble background. Each bubble is a radial gradient that already fades to
+   transparent, so no blur filter is needed to soften them — which keeps the
+   whole thing to compositor-only transforms. The orbit keyframe counter-rotates
+   so a bubble travels a circle without spinning about its own centre. */
+@keyframes bubble-drift-y {
+  0%,
+  100% {
+    transform: translateY(-14%);
+  }
+  50% {
+    transform: translateY(14%);
+  }
+}
+
+@keyframes bubble-drift-x {
+  0%,
+  100% {
+    transform: translateX(-16%) translateY(-6%);
+  }
+  50% {
+    transform: translateX(16%) translateY(6%);
+  }
+}
+
+@keyframes bubble-orbit {
+  from {
+    transform: rotate(0deg) translateX(9%) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(9%) rotate(-360deg);
+  }
+}
+
+@keyframes bubble-orbit-reverse {
+  from {
+    transform: rotate(0deg) translateX(7%) rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg) translateX(7%) rotate(360deg);
+  }
+}

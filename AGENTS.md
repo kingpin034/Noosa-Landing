@@ -94,6 +94,8 @@ values are:
 - background `#131313`, raised surface `#181818` (feature cards, nav bar, language
   switcher), control surface `#212121` (nav pills and icon buttons), hairline
   `rgba(245,245,245,0.1)`
+- the footer "noosa" watermark is filled with the page background `#131313`, so it
+  reads as a cut-out in the red glow behind it rather than a shape on top
 - a card's bottom fade must reuse the card's own RGB for the transparent stop
   (`from-[rgba(24,24,24,0)]` for a `#181818` card) — a plain `transparent` drifts
   through black on the way down
@@ -141,6 +143,32 @@ would break keyboard, trackpad momentum and assistive tech, so don't.
   sideways as the active step moves; the body copy is revealed by animating the
   grid row from `0fr` to `1fr`, which gives a height transition for free.
 
+`BubbleBackground` (hero) is five gradient bubbles drifting on independent
+orbits plus one that trails the cursor, over the existing static glow. Two things
+to know before editing it:
+
+- **Each bubble is two elements.** The outer owns its position and the centring
+  `translate(-50%, -50%)`; the inner owns the animation. They cannot share one
+  element, because a keyframe that sets `transform` silently drops the centring —
+  and the cursor follower's inline transform would do the same.
+- The gradients fade to transparent on their own, so there is deliberately **no
+  blur filter**: everything stays compositor-only transforms. The wrapper uses
+  `mix-blend-screen` so overlaps brighten additively rather than stacking muddy.
+
+The colours are the hero glow's own stops (`137,48,53` / `108,41,45` /
+`78,34,36`) — that is what keeps it reading as the existing red with movement
+added rather than a new background. Cursor tracking is skipped entirely on
+coarse pointers and under `prefers-reduced-motion`, where the bubbles also
+render in place.
+
+Feature cards use `group` + `group-hover`: the card tints to the 10% red wash
+with a solid red border, and the screenshot scales to 1.06. The card no longer
+sets `overflow-clip` (so a scaled image is free to grow past the padding), which
+means the bottom fade carries its own `rounded-b-[16px]` to keep the card's
+corners clean, and the title sits at `z-10` so the growing image slides behind it
+rather than over it. Note Tailwind minifies `rgba(216,68,75,0.1)` to `#d8444b1a`
+in the built CSS — grep for the hex, not the rgba, when checking what shipped.
+
 The organizer logo strip is a pure-CSS marquee (`organizer-marquee` keyframes in
 `src/index.css`). Two things keep the loop seamless, and both are easy to break:
 
@@ -167,9 +195,16 @@ worth keeping if you reuse it:
 
 ## Known gaps
 
-- **Nothing is interactive.** Every button, nav item and footer link is a `<div>`
-  or `<p>` with no handler, `href` or `<button>`. Wiring them up also means
-  fixing the semantics (`<a>`, `<button>`, focus states).
+- **Almost nothing is interactive.** The two hero CTAs are real `<a>` elements
+  with hover and focus-visible states — copy that pattern. Everything else (nav
+  items, footer links, feature badges) is still a `<div>` or `<p>` with no
+  handler, `href` or `<button>`, and wiring them up means fixing the semantics
+  too.
+- In-page anchors need a click handler, not just an `href`. A plain
+  `<a href="#foo">` only scrolls when the hash *changes*, so a second click after
+  scrolling away does nothing. "See How it Works" calls `scrollIntoView` itself
+  (with no `behavior`, so it inherits the reduced-motion-guarded CSS
+  `scroll-behavior`) and keeps the `href` for middle-click and open-in-new-tab.
 - **No mobile menu.** Below `xl` the nav hides the pills, and below `md` the
   search and bell buttons too, so on anything smaller than a large laptop there
   is no way to reach Discover / Tickets / My Events. A hamburger and drawer is
