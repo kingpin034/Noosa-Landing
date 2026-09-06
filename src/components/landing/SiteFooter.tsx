@@ -37,7 +37,9 @@ function FooterBackdrop() {
             preserveAspectRatio="none"
             viewBox="0 0 1440 312.267"
           >
-            <path d={iconPaths.noosaWatermark} fill="#181818" />
+            {/* Page background, so the lettering reads as a cut-out in the glow
+                rather than a lighter shape sitting on top of it. */}
+            <path d={iconPaths.noosaWatermark} fill="#131313" />
           </svg>
         </div>
       </div>

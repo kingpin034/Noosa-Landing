@@ -42,19 +42,19 @@ function FeatureCard({
   screenshotAlt: string
 }) {
   return (
-    <div className="bg-[#181818] border border-[rgba(245,245,245,0.1)] border-solid content-stretch flex flex-col gap-[16px] items-start min-w-px overflow-clip pb-[20px] pt-[32px] px-[24px] relative rounded-[16px] md:pt-[40px] md:px-[40px]">
+    <div className="bg-[#181818] border border-[rgba(245,245,245,0.1)] border-solid content-stretch duration-300 flex flex-col gap-[16px] group hover:bg-[rgba(216,68,75,0.1)] hover:border-[#d8444b] hover:z-10 items-start min-w-px pb-[20px] pt-[32px] px-[24px] relative rounded-[16px] transition-colors md:pt-[40px] md:px-[40px]">
       <FeatureBadge>{badge}</FeatureBadge>
-      <p className="[word-break:break-word] font-['Plus_Jakarta_Sans:Bold',sans-serif] font-bold leading-[1.2] min-w-full relative shrink-0 text-[#f5f5f5] text-[20px] md:text-[24px] w-[min-content]">
+      <p className="[word-break:break-word] font-['Plus_Jakarta_Sans:Bold',sans-serif] font-bold leading-[1.2] min-w-full relative shrink-0 text-[#f5f5f5] text-[20px] md:text-[24px] w-[min-content] z-10">
         {title}
       </p>
       <img
         alt={screenshotAlt}
-        className="block h-auto max-w-none pointer-events-none relative shrink-0 w-full"
+        className="block duration-500 ease-out group-hover:scale-[1.06] h-auto max-w-none pointer-events-none relative shrink-0 transition-transform w-full"
         src={screenshot}
       />
       <div
         aria-hidden
-        className="absolute bg-gradient-to-b bottom-[-1px] from-[rgba(24,24,24,0)] h-[160px] left-[-1px] right-[-1px] to-[#181818] to-[54.327%]"
+        className="absolute bg-gradient-to-b bottom-0 duration-300 from-[rgba(24,24,24,0)] group-hover:from-[rgba(31,21,22,0)] group-hover:to-[#1f1516] h-[160px] inset-x-0 rounded-b-[16px] to-[#181818] to-[54.327%] transition-colors z-10"
       />
     </div>
   )

@@ -111,7 +111,7 @@ export function HowItWorksSection() {
   }, [])
 
   return (
-    <section className="w-full">
+    <section className="w-full" id="how-it-works">
       <div className={`lg:hidden py-[64px] w-full ${SECTION_X}`}>
         <Container className="flex flex-col gap-[48px]">
           <Heading />
